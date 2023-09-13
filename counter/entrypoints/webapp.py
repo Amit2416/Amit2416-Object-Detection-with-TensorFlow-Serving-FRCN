@@ -18,6 +18,8 @@ def object_detection():
     count_response = count_action.execute(image, threshold)
     return jsonify(count_response)
 
+#added new service point 
+
 @app.route('/new-service-endpoint', methods=['POST'])
 def predict_objects():
     uploaded_file = request.files['file']
