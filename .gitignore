@@ -1,0 +1,5 @@
+.idea
+.venv
+spikes
+*.pyc
+tmp/model/1
