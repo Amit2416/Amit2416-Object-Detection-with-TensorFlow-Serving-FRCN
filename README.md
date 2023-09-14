@@ -50,7 +50,14 @@ docker run \
 docker rm -f test-mongo
 docker run --name test-mongo --rm --net host -d mongo:latest
 ```
+## Run postgressql
 
+```bash
+docker rm -f test-postgres
+docker run --name test-postgres --rm --net host -d postgres:latest
+
+
+```
 
 ## Setup virtualenv
 
@@ -72,6 +79,8 @@ python -m counter.entrypoints.webapp
 ```
 ENV=prod python -m counter.entrypoints.webapp
 ```
+ENV=prod DATABASE_TYPE=postgresql python -m counter.entrypoints.webapp
+
 
 ## Call the service
 

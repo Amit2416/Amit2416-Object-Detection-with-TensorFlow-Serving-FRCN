@@ -1,9 +1,12 @@
 from typing import List
-
 from pymongo import MongoClient
 
 from counter.domain.models import ObjectCount
 from counter.domain.ports import ObjectCountRepo
+
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from counter.adapters.postgressql_model import Base, ObjectCountEntity
 
 
 class CountInMemoryRepo(ObjectCountRepo):
@@ -54,3 +57,26 @@ class CountMongoDBRepo(ObjectCountRepo):
         for value in new_values:
             counter_col.update_one({'object_class': value.object_class}, {'$inc': {'count': value.count}}, upsert=True)
 
+
+class CountPostgreSQLRepo(ObjectCountRepo):
+    def __init__(self, host, port, database):
+        self.engine = create_engine(f"postgresql://{host}:{port}/{database}")
+        Base.metadata.create_all(self.engine)
+        Session = sessionmaker(bind=self.engine)
+        self.session = Session()
+
+    def read_values(self, object_classes: List[str] = None) -> List[ObjectCount]:
+        query = self.session.query(ObjectCountEntity).filter(
+            ObjectCountEntity.object_class.in_(object_classes)) if object_classes else self.session.query(
+            ObjectCountEntity)
+        return [ObjectCount(row.object_class, row.count) for row in query]
+
+    def update_values(self, new_values: List[ObjectCount]):
+        for new_object_count in new_values:
+            existing_record = self.session.query(ObjectCountEntity).filter_by(object_class=new_object_count.object_class).first()
+            if existing_record:
+                existing_record.count += new_object_count.count
+            else:
+                new_record = ObjectCountEntity(object_class=new_object_count.object_class, count=new_object_count.count)
+                self.session.add(new_record)
+        self.session.commit()
