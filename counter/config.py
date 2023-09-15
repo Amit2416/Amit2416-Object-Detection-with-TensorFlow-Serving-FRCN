@@ -31,12 +31,15 @@ def prod_count_action(database_type: str) -> CountDetectedObjects:
         return CountDetectedObjects(TFSObjectDetector(tfs_host, tfs_port, 'rfcn'),
                                     CountMongoDBRepo(host=mongo_host, port=mongo_port, database=mongo_db))
     elif database_type == 'postgresql':
+        postgres_user = os.environ.get('POSTGRES_USER', 'postgres')
+        postgres_password = os.environ.get('POSTGRES_PASSWORD', 'password')
         postgres_host = os.environ.get('POSTGRES_HOST', 'localhost')
         postgres_port = os.environ.get('POSTGRES_PORT', 5432)
         postgres_db = os.environ.get('POSTGRES_DB', 'prod_counter')
+
+        db_url = f"postgresql://{postgres_user}:{postgres_password}@{postgres_host}:{postgres_port}/{postgres_db}"
         return CountDetectedObjects(TFSObjectDetector(tfs_host, tfs_port, 'rfcn'),
-                                    CountPostgreSQLRepo(host=postgres_host, port=postgres_port,
-                                                              database=postgres_db))
+                                    CountPostgreSQLRepo(db_url))
     else:
         raise ValueError("Invalid database type. Supported types are 'mongodb' and 'postgresql'")
 

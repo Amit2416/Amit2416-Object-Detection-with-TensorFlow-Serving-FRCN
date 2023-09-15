@@ -59,8 +59,8 @@ class CountMongoDBRepo(ObjectCountRepo):
 
 
 class CountPostgreSQLRepo(ObjectCountRepo):
-    def __init__(self, host, port, database):
-        self.engine = create_engine(f"postgresql://{host}:{port}/{database}")
+    def __init__(self, db_url):
+        self.engine = create_engine(db_url)
         Base.metadata.create_all(self.engine)
         Session = sessionmaker(bind=self.engine)
         self.session = Session()

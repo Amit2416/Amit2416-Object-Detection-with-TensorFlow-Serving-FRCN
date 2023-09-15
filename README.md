@@ -54,7 +54,7 @@ docker run --name test-mongo --rm --net host -d mongo:latest
 
 ```bash
 docker rm -f test-postgres
-docker run --name test-postgres --rm --net host -d postgres:latest
+docker run --name some-postgres -e POSTGRES_PASSWORD=mysecretpassword -d postgres
 
 
 ```
