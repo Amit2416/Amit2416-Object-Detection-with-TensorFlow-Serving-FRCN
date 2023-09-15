@@ -1,0 +1,10 @@
+[2023-09-15 13:20:21,427: INFO: _internal: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.160.0.4:5000]
+[2023-09-15 13:20:21,427: INFO: _internal: [33mPress CTRL+C to quit[0m]
+[2023-09-15 13:20:21,428: INFO: _internal:  * Restarting with stat]
+[2023-09-15 13:20:21,891: WARNING: _internal:  * Debugger is active!]
+[2023-09-15 13:20:21,892: INFO: _internal:  * Debugger PIN: 124-892-599]
+[2023-09-15 13:20:32,933: INFO: webapp: Received object detection request with old service end point]
+[2023-09-15 13:20:34,593: INFO: _internal: 127.0.0.1 - - [15/Sep/2023 13:20:34] "POST /object-count HTTP/1.1" 200 -]

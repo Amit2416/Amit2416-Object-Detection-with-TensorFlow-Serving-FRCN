@@ -54,33 +54,3 @@ def get_count_action() -> CountDetectedObjects:
     database_type = os.environ.get('DATABASE_TYPE', 'mongodb')
     count_action_fn = f"{env}_count_action"
     return globals()[count_action_fn](database_type)
-
-"""
-config.py - Configuration and Setup for Object Detection and Counting System
-
-This module defines functions for configuring and setting up an object detection and counting system based on the environment (development or production).
-
-Functions:
-    - dev_count_action() -> CountDetectedObjects:
-        Creates a development version of the CountDetectedObjects action.
-        Returns an instance of CountDetectedObjects with a FakeObjectDetector and CountInMemoryRepo for testing and development.
-
-    - prod_count_action() -> CountDetectedObjects:
-        Creates a production version of the CountDetectedObjects action.
-        Reads environment variables to configure the system, including TFS server and MongoDB database connection.
-        Returns an instance of CountDetectedObjects with a TFSObjectDetector and CountMongoDBRepo for production use.
-
-    - get_count_action() -> CountDetectedObjects:
-        Determines the appropriate CountDetectedObjects action to create based on the environment.
-        Reads the 'ENV' environment variable (dev or prod) to select the configuration.
-        Returns the configured CountDetectedObjects instance based on the environment.
-
-Usage:
-    - Set environment variables to configure the system:
-        - 'TFS_HOST', 'TFS_PORT': For TensorFlow Serving (TFS) server connection.
-        - 'MONGO_HOST', 'MONGO_PORT', 'MONGO_DB': For MongoDB database connection.
-        - 'ENV': Set to 'dev' for development or 'prod' for production.
-
-"""
-
-

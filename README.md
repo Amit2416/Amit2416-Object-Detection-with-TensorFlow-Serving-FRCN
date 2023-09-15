@@ -43,19 +43,30 @@ docker run \
     
 ```
 
+## Choose Database
 
-## Run mongo 
+We have two options here. Choose any.
+
+
+### Run mongo 
 
 ```bash
 docker rm -f test-mongo
 docker run --name test-mongo --rm --net host -d mongo:latest
 ```
-## Run postgressql
+### Run postgressql
 
 ```bash
-docker rm -f test-postgres
+docker rm -f postgres-0
+docker pull postgres:alpine
+docker run --name postgres-0 -e POSTGRES_PASSWORD=password -d -p 5432:5432 postgres:alpine
 docker run --name some-postgres -e POSTGRES_PASSWORD=mysecretpassword -d postgres
 
+Now, create the database by accessing the shell of the running container
+
+docker exec -it postgres-0 bash
+CREATE DATABASE prod_counter;
+\q #to exit the shell
 
 ```
 
@@ -76,9 +87,10 @@ python -m counter.entrypoints.webapp
 
 ### Using real services in docker containers
 
-```
-ENV=prod python -m counter.entrypoints.webapp
-```
+Run anyone as the database selected for:
+
+ENV=prod DATABASE_TYPE=mongodb python -m counter.entrypoints.webapp
+
 ENV=prod DATABASE_TYPE=postgresql python -m counter.entrypoints.webapp
 
 
